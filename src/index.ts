@@ -9,7 +9,7 @@ async function main() {
   const portainerConfig = await askPortainerInstance();
   const environment = await askPortainerEnvironment(portainerConfig);
   const repoConfig = await askRepoConfig();
-  const deploymentConfig = await askDeploymentConfig();
+  const deploymentConfig = await askDeploymentConfig(repoConfig);
 
   // TODO: ask confirmation
 

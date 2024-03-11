@@ -3,10 +3,19 @@ import Table from "cli-table";
 
 import multiline from "../inquiry/multiline";
 import { DeploymentConfig, EnvironmentVariable } from "../types/deployment";
+import { RepoConfig } from "../types/repo";
 
-export async function askDeploymentConfig(): Promise<DeploymentConfig> {
+export async function askDeploymentConfig(
+  repoConfig: RepoConfig
+): Promise<DeploymentConfig> {
+  const defaultStackName = `${repoConfig.repoUrl
+    .split("/")
+    .pop()
+    ?.replace(".git", "")}-${repoConfig.branch}`;
+
   const stackName = await input({
     message: "Enter the stack name",
+    default: defaultStackName,
     validate: (input) => {
       if (input === "") {
         return "Stack name cannot be empty";
