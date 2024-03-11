@@ -1,7 +1,7 @@
-import { input, confirm, password, select } from "@inquirer/prompts"
+import { input, confirm, select } from "@inquirer/prompts"
 
-import { RepoConfig } from "../types/repo"
-import { createGitlabRepoAccessToken } from "../api/gitlab"
+import { RepoConfig, RepoCredentials, RepoHostInterface } from "../types/repo"
+import { GitlabRepoHost, OtherRepoHost, RepoHost } from "../repo"
 
 export async function askRepoConfig(): Promise<RepoConfig> {
   const repoUrl = await input({
@@ -45,90 +45,50 @@ export async function askRepoConfig(): Promise<RepoConfig> {
 
   // TODO: check repo auth, branch and file
 
-  const { username, password } = await askRepoCredentials(repoUrl)
+  const credentials = await askRepoCredentials(repoUrl)
 
   return {
     repoUrl,
     branch,
     composeFileName,
-    username,
-    password,
+    credentials,
   }
 }
 
 async function askRepoCredentials(
   repoUrl: string
-): Promise<{ username: string | null; password: string | null }> {
-  let username = null
-  let passwordValue = null
-
+): Promise<RepoCredentials | null> {
   const requireCredentials = await confirm({
     message: "Does the repository require authentication?",
     default: false,
   })
 
-  if (requireCredentials) {
-    // TODO: use constants for credentials method
-
-    const credentialsMethod = await select({
-      message: "Select the credentials method",
-      choices: [
-        { name: "Username and password", value: "username-password" },
-        { name: "Automatic GitLab access token", value: "gitlab" },
-      ],
-    })
-
-    if (credentialsMethod === "username-password") {
-      username = await input({
-        message: "Enter the username",
-        validate: (input) => {
-          if (input === "") {
-            return "Username cannot be empty"
-          }
-
-          return true
-        },
-      })
-
-      passwordValue = await password({
-        message: "Enter the password",
-        validate: (input) => {
-          if (input === "") {
-            return "Password cannot be empty"
-          }
-
-          return true
-        },
-      })
-    } else if (credentialsMethod === "gitlab") {
-      const gitlabPersonalAccessToken = await password({
-        message: "Enter the GitLab personal access token",
-        validate: (input) => {
-          if (input === "") {
-            return "Personal access token cannot be empty"
-          }
-
-          return true
-        },
-      })
-
-      const gitlabRepoAccessToken = await createGitlabRepoAccessToken(
-        repoUrl,
-        gitlabPersonalAccessToken
-      )
-
-      username = "gitlab"
-      passwordValue = gitlabRepoAccessToken
-
-      // TODO: handle invalid token
-      // TODO: store gitlab credentials
-    } else {
-      throw new Error("Not implemented")
-    }
+  if (!requireCredentials) {
+    return null
   }
 
-  return {
-    username,
-    password: passwordValue,
+  const repoHostInput = await select({
+    message: "Select the credentials method",
+    choices: Object.entries(RepoHost).map(([key, value]) => ({
+      name: value,
+      value: key,
+    })),
+  })
+
+  let repoHost: RepoHostInterface
+
+  switch (repoHostInput) {
+    case RepoHost.GITLAB:
+      repoHost = new GitlabRepoHost(repoUrl)
+      break
+    case RepoHost.OTHER:
+      repoHost = new OtherRepoHost()
+      break
+    default:
+      throw new Error("Invalid repo host")
   }
+
+  const credentials = await repoHost.authenticate()
+
+  return credentials
 }
