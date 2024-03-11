@@ -1,9 +1,9 @@
 export type PortainerConfig = {
-  portainerUrl: string;
-  portainerAccessToken: string;
-};
+  portainerUrl: string
+  portainerAccessToken: string
+}
 
 export type PortainerEnvironment = {
-  id: number;
-  name: string;
-};
+  id: number
+  name: string
+}

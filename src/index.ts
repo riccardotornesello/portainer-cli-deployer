@@ -1,15 +1,15 @@
-import { askPortainerInstance } from "./configuration/portainer-instance";
-import { askPortainerEnvironment } from "./configuration/portainer-environment";
-import { askRepoConfig } from "./configuration/repo";
-import { askDeploymentConfig } from "./configuration/deployment";
+import { askPortainerInstance } from "./configuration/portainer-instance"
+import { askPortainerEnvironment } from "./configuration/portainer-environment"
+import { askRepoConfig } from "./configuration/repo"
+import { askDeploymentConfig } from "./configuration/deployment"
 
-import { createPortainerStack } from "./api/portainer";
+import { createPortainerStack } from "./api/portainer"
 
 async function main() {
-  const portainerConfig = await askPortainerInstance();
-  const environment = await askPortainerEnvironment(portainerConfig);
-  const repoConfig = await askRepoConfig();
-  const deploymentConfig = await askDeploymentConfig(repoConfig);
+  const portainerConfig = await askPortainerInstance()
+  const environment = await askPortainerEnvironment(portainerConfig)
+  const repoConfig = await askRepoConfig()
+  const deploymentConfig = await askDeploymentConfig(repoConfig)
 
   // TODO: ask confirmation
 
@@ -18,8 +18,8 @@ async function main() {
     environment,
     repoConfig,
     deploymentConfig
-  );
-  console.log(res);
+  )
+  console.log(res)
 }
 
-main();
+main()

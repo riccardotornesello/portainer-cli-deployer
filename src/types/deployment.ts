@@ -1,9 +1,9 @@
 export type DeploymentConfig = {
-  stackName: string;
-  environmentVariables: EnvironmentVariable[];
-};
+  stackName: string
+  environmentVariables: EnvironmentVariable[]
+}
 
 export type EnvironmentVariable = {
-  name: string;
-  value: string;
-};
+  name: string
+  value: string
+}

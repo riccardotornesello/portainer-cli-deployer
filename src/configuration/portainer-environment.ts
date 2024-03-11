@@ -1,15 +1,15 @@
-import { select } from "@inquirer/prompts";
+import { select } from "@inquirer/prompts"
 
-import { getPortainerEnvironments } from "../api/portainer";
-import { PortainerConfig, PortainerEnvironment } from "../types/portainer";
+import { getPortainerEnvironments } from "../api/portainer"
+import { PortainerConfig, PortainerEnvironment } from "../types/portainer"
 
 export async function askPortainerEnvironment(
   portainerConfig: PortainerConfig
 ): Promise<PortainerEnvironment> {
-  const endpoints = await getPortainerEnvironments(portainerConfig);
+  const endpoints = await getPortainerEnvironments(portainerConfig)
 
   if (!endpoints) {
-    throw new Error("Cannot connect to Portainer");
+    throw new Error("Cannot connect to Portainer")
   }
 
   const endpoint = await select<any>({
@@ -18,10 +18,10 @@ export async function askPortainerEnvironment(
       name: endpoint.Name,
       value: endpoint,
     })),
-  });
+  })
 
   return {
     id: endpoint.Id,
     name: endpoint.Name,
-  };
+  }
 }
