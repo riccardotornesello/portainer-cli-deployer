@@ -1,17 +1,29 @@
+import { program } from "commander"
+import { confirm } from "@inquirer/prompts"
+
 import { askPortainerInstance } from "./configuration/portainer-instance"
 import { askPortainerEnvironment } from "./configuration/portainer-environment"
 import { askRepoConfig } from "./configuration/repo"
 import { askDeploymentConfig } from "./configuration/deployment"
-
 import { createPortainerStack } from "./api/portainer"
 
 async function main() {
+  program.option("--insecure-portainer").option("--insecure-repo")
+  program.parse()
+
   const portainerConfig = await askPortainerInstance()
   const environment = await askPortainerEnvironment(portainerConfig)
   const repoConfig = await askRepoConfig()
   const deploymentConfig = await askDeploymentConfig(repoConfig)
 
-  // TODO: ask confirmation
+  const confirmed = await confirm({
+    message: "Do you want to deploy?",
+    default: true,
+  })
+  if (!confirmed) {
+    console.log("Aborted")
+    return
+  }
 
   const res = await createPortainerStack(
     portainerConfig,
