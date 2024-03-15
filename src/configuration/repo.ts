@@ -1,7 +1,12 @@
 import { input, confirm, select } from "@inquirer/prompts"
 
 import { RepoConfig, RepoCredentials, RepoHostInterface } from "../types/repo"
-import { GitlabRepoHost, OtherRepoHost, RepoHost } from "../repo"
+import {
+  GitlabRepoHost,
+  OtherRepoHost,
+  RepoHost,
+  RepoHostDetails,
+} from "../repo"
 
 export async function askRepoConfig(): Promise<RepoConfig> {
   const repoUrl = await input({
@@ -67,11 +72,11 @@ async function askRepoCredentials(
     return null
   }
 
-  const repoHostInput = await select({
+  const repoHostInput = await select<RepoHost>({
     message: "Select the credentials method",
-    choices: Object.entries(RepoHost).map(([key, value]) => ({
+    choices: Object.entries(RepoHostDetails).map(([key, value]) => ({
       name: value,
-      value: key,
+      value: key as unknown as RepoHost,
     })),
   })
 

@@ -25,6 +25,8 @@ async function main() {
     return
   }
 
+  // TODO: create gitlab access token only after confirmation
+
   const res = await createPortainerStack(
     portainerConfig,
     environment,

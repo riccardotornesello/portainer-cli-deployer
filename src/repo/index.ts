@@ -1,7 +1,12 @@
 export * from "./gitlab"
 export * from "./other"
 
-export const RepoHost = {
-  GITLAB: "Automatic GitLab access token",
-  OTHER: "Username and password",
+export enum RepoHost {
+  GITLAB,
+  OTHER,
+}
+
+export const RepoHostDetails: Record<RepoHost, string> = {
+  [RepoHost.GITLAB]: "Automatic GitLab access token",
+  [RepoHost.OTHER]: "Username and password",
 }
