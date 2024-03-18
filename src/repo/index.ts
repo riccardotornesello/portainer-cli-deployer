@@ -2,8 +2,8 @@ export * from "./gitlab"
 export * from "./other"
 
 export enum RepoHost {
-  GITLAB,
-  OTHER,
+  GITLAB = "GITLAB",
+  OTHER = "OTHER",
 }
 
 export const RepoHostDetails: Record<RepoHost, string> = {
