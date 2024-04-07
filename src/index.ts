@@ -1,3 +1,5 @@
+#! /usr/bin/env node
+
 import { program } from "commander"
 import { confirm } from "@inquirer/prompts"
 
