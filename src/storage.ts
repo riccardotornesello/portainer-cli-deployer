@@ -2,7 +2,7 @@ import path from "path"
 import os from "os"
 import fs from "fs"
 
-const configurationPath = path.join(os.homedir(), ".portainer-git-deployer")
+const configurationPath = path.join(os.homedir(), ".portainer-cli-deployer")
 const instancesFilePath = path.join(configurationPath, "credentials.json")
 
 export async function getPortainerInstances() {
