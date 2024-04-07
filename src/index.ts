@@ -5,6 +5,7 @@ import { askPortainerInstance } from "./configuration/portainer-instance"
 import { askPortainerEnvironment } from "./configuration/portainer-environment"
 import { askRepoConfig } from "./configuration/repo"
 import { askDeploymentConfig } from "./configuration/deployment"
+import { askBuildMethod } from "./configuration/build-method"
 import { createPortainerStack } from "./api/portainer"
 
 async function main() {
@@ -13,6 +14,7 @@ async function main() {
 
   const portainerConfig = await askPortainerInstance()
   const environment = await askPortainerEnvironment(portainerConfig)
+  const buildMethod = await askBuildMethod()
   const repoConfig = await askRepoConfig()
   const deploymentConfig = await askDeploymentConfig(repoConfig)
 
