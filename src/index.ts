@@ -16,9 +16,9 @@ import { StackSource } from "./types/stack-sources"
 async function main() {
   program
     .option("--portainer-insecure")
-    .option("--portainer-instance")
-    .option("--portainer-url")
-    .option("--portainer-access-token")
+    .option("--portainer-instance <string>")
+    .option("--portainer-url <string>")
+    .option("--portainer-access-token <string>")
   program.parse()
 
   const portainerInstance = await portainerInstanceStep()
