@@ -1,14 +1,14 @@
 import { select, input, confirm } from "@inquirer/prompts"
 
 import { getPortainerInstances, storePortainerInstance } from "./storage"
-import { PortainerConfig } from "../../types/portainer"
+import { PortainerInstance } from "../../types/portainer"
 import {
   checkPortainerConnection,
   checkPortainerAuthentication,
 } from "./validation"
 import { urlRegex } from "../../utils/regex"
 
-export async function askPortainerInstance(): Promise<PortainerConfig> {
+export async function askPortainerInstance(): Promise<PortainerInstance> {
   const savedInstances = await getPortainerInstances()
 
   let { portainerUrl, portainerAccessToken, portainerInsecure } = await select({
@@ -128,7 +128,7 @@ async function askNewPortainerInstance(savedInstances: any) {
 
 async function askSavePortainerInstance(
   otherInstances: any,
-  newInstance: PortainerConfig
+  newInstance: PortainerInstance
 ) {
   const shouldSavePortainerConfig = await confirm({
     message: "Do you want to save the Portainer configuration for future use?",

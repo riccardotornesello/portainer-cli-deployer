@@ -1,4 +1,4 @@
-export type PortainerConfig = {
+export type PortainerInstance = {
   portainerUrl: string
   portainerAccessToken: string
   portainerInsecure: boolean

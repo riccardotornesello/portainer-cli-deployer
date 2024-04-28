@@ -2,10 +2,10 @@ import {
   getPortainerInstanceStatus,
   getPortainerInstanceInfo,
 } from "../../api/portainer"
-import { PortainerConfig } from "../../types/portainer"
+import { PortainerInstance } from "../../types/portainer"
 
 export async function checkPortainerConnection(
-  portainerInstance: PortainerConfig
+  portainerInstance: PortainerInstance
 ) {
   try {
     const res = await getPortainerInstanceStatus(portainerInstance)
@@ -21,7 +21,7 @@ export async function checkPortainerConnection(
 }
 
 export async function checkPortainerAuthentication(
-  portainerInstance: PortainerConfig
+  portainerInstance: PortainerInstance
 ) {
   try {
     const res = await getPortainerInstanceInfo(portainerInstance)

@@ -3,12 +3,12 @@ import { program } from "commander"
 import { askPortainerEnvironment } from "./questions"
 
 import { getPortainerEnvironments } from "../../api/portainer"
-import { PortainerConfig, PortainerEnvironment } from "../../types/portainer"
+import { PortainerInstance, PortainerEnvironment } from "../../types/portainer"
 
 const globalOptions = program.opts()
 
 export default async function (
-  portainerConfig: PortainerConfig
+  portainerConfig: PortainerInstance
 ): Promise<PortainerEnvironment> {
   if (globalOptions.portainerEnvironment) {
     const availableEnvironments =

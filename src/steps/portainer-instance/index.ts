@@ -1,7 +1,7 @@
 import { program } from "commander"
 
 import { urlRegex } from "../../utils/regex"
-import { PortainerConfig } from "../../types/portainer"
+import { PortainerInstance } from "../../types/portainer"
 
 import { getPortainerInstances } from "./storage"
 import { askPortainerInstance } from "./questions"
@@ -12,7 +12,7 @@ import {
 
 const globalOptions = program.opts()
 
-export default async function (): Promise<PortainerConfig> {
+export default async function (): Promise<PortainerInstance> {
   if (globalOptions.portainerInstance) {
     return await getInstanceByName()
   } else if (globalOptions.portainerUrl) {

@@ -2,12 +2,12 @@ import axios from "axios"
 import https from "https"
 import { v4 as uuidv4 } from "uuid"
 
-import { PortainerConfig, PortainerEnvironment } from "../types/portainer"
+import { PortainerInstance, PortainerEnvironment } from "../types/portainer"
 import { RepoConfig } from "../types/git"
 import { DeploymentConfig } from "../types/deployment"
 
 async function portainerApiCall(
-  portainerConfig: PortainerConfig,
+  portainerConfig: PortainerInstance,
   method: string,
   url: string,
   data: any = null
@@ -27,7 +27,7 @@ async function portainerApiCall(
 }
 
 export async function getPortainerInstanceStatus(
-  portainerConfig: PortainerConfig
+  portainerConfig: PortainerInstance
 ) {
   const res = await portainerApiCall(
     portainerConfig,
@@ -43,7 +43,7 @@ export async function getPortainerInstanceStatus(
 }
 
 export async function getPortainerInstanceInfo(
-  portainerConfig: PortainerConfig
+  portainerConfig: PortainerInstance
 ) {
   const res = await portainerApiCall(portainerConfig, "get", "/api/system/info")
 
@@ -59,7 +59,7 @@ export async function getPortainerInstanceInfo(
 }
 
 export async function getPortainerEnvironments(
-  portainerConfig: PortainerConfig
+  portainerConfig: PortainerInstance
 ) {
   const res = await portainerApiCall(portainerConfig, "get", "/api/endpoints")
 
@@ -67,7 +67,7 @@ export async function getPortainerEnvironments(
 }
 
 export async function createPortainerStack(
-  portainerConfig: PortainerConfig,
+  portainerConfig: PortainerInstance,
   environment: PortainerEnvironment,
   deploymentConfig: DeploymentConfig,
   repoConfig?: RepoConfig

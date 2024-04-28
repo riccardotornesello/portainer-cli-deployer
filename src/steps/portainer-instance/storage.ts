@@ -2,7 +2,7 @@ import path from "path"
 import fs from "fs"
 
 import { configurationPath } from "../../utils/storage"
-import { PortainerConfig } from "../../types/portainer"
+import { PortainerInstance } from "../../types/portainer"
 
 const instancesFilePath = path.join(configurationPath, "credentials.json")
 
@@ -16,7 +16,7 @@ export async function getPortainerInstances() {
 
 export async function storePortainerInstance(
   name: string,
-  portainerInstance: PortainerConfig
+  portainerInstance: PortainerInstance
 ) {
   fs.mkdirSync(configurationPath, {
     recursive: true,

@@ -1,10 +1,10 @@
 import { select } from "@inquirer/prompts"
 
 import { getPortainerEnvironments } from "../../api/portainer"
-import { PortainerConfig, PortainerEnvironment } from "../../types/portainer"
+import { PortainerInstance, PortainerEnvironment } from "../../types/portainer"
 
 export async function askPortainerEnvironment(
-  portainerConfig: PortainerConfig
+  portainerConfig: PortainerInstance
 ): Promise<PortainerEnvironment> {
   const endpoints = await getPortainerEnvironments(portainerConfig)
 
