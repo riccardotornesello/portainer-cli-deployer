@@ -6,7 +6,9 @@ import { PortainerInstance } from "../../types/portainer"
 
 const instancesFilePath = path.join(configurationPath, "credentials.json")
 
-export async function getPortainerInstances() {
+export async function getPortainerInstances(): Promise<{
+  [name: string]: PortainerInstance
+}> {
   if (!fs.existsSync(instancesFilePath)) {
     return {}
   }
