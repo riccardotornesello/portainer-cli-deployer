@@ -1,7 +1,7 @@
 import { password } from "@inquirer/prompts"
 
-import { RepoHostInterface } from "../types/repo"
-import { createGitlabRepoAccessToken } from "../api/gitlab"
+import { RepoHostInterface } from "../../types/git"
+import { createGitlabRepoAccessToken } from "../../api/gitlab"
 
 export class GitlabRepoHost implements RepoHostInterface {
   repoUrl: string

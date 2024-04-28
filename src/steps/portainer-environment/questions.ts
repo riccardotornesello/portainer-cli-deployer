@@ -1,15 +1,15 @@
 import { select } from "@inquirer/prompts"
 
-import { getPortainerEnvironments } from "../api/portainer"
-import { PortainerConfig, PortainerEnvironment } from "../types/portainer"
+import { getPortainerEnvironments } from "../../api/portainer"
+import { PortainerInstance, PortainerEnvironment } from "../../types/portainer"
 
 export async function askPortainerEnvironment(
-  portainerConfig: PortainerConfig
+  portainerInstance: PortainerInstance
 ): Promise<PortainerEnvironment> {
-  const endpoints = await getPortainerEnvironments(portainerConfig)
+  const endpoints = await getPortainerEnvironments(portainerInstance)
 
   if (!endpoints) {
-    throw new Error("Cannot connect to Portainer")
+    throw new Error("Cannot get Portainer environments")
   }
 
   const endpoint = await select<any>({

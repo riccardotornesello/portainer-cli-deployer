@@ -1,9 +1,7 @@
-export * from "./gitlab"
-export * from "./other"
+import { StackSource, RepoHost } from "../types/stack-sources"
 
-export enum RepoHost {
-  GITLAB = "GITLAB",
-  OTHER = "OTHER",
+export const StackSourceDetails: Record<StackSource, string> = {
+  [StackSource.GIT]: "Git",
 }
 
 export const RepoHostDetails: Record<RepoHost, string> = {

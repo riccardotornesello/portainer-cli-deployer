@@ -3,22 +3,43 @@
 import { program } from "commander"
 import { confirm } from "@inquirer/prompts"
 
-import { askPortainerInstance } from "./configuration/portainer-instance"
-import { askPortainerEnvironment } from "./configuration/portainer-environment"
-import { askRepoConfig } from "./configuration/repo"
-import { askDeploymentConfig } from "./configuration/deployment"
-import { askBuildMethod } from "./configuration/build-method"
 import { createPortainerStack } from "./api/portainer"
 
+import portainerInstanceStep from "./steps/portainer-instance"
+import portainerEnvironmentStep from "./steps/portainer-environment"
+import stackSourceStep from "./steps/stack-source"
+import gitStep from "./steps/stack-source-git"
+import deploymentStep from "./steps/deployment"
+
+import { StackSource } from "./types/stack-sources"
+
 async function main() {
-  program.option("--insecure-portainer").option("--insecure-repo")
+  program
+    .option("--portainer-insecure")
+    .option("--portainer-instance <string>")
+    .option("--portainer-url <string>")
+    .option("--portainer-access-token <string>")
   program.parse()
 
-  const portainerConfig = await askPortainerInstance()
-  const environment = await askPortainerEnvironment(portainerConfig)
-  const buildMethod = await askBuildMethod()
-  const repoConfig = await askRepoConfig()
-  const deploymentConfig = await askDeploymentConfig(repoConfig)
+  const portainerInstance = await portainerInstanceStep()
+  const portainerEnvironment = await portainerEnvironmentStep(portainerInstance)
+  const stackSource = await stackSourceStep()
+
+  let gitConfig
+  let defaultStackName
+
+  if (stackSource === StackSource.GIT) {
+    gitConfig = await gitStep()
+
+    defaultStackName = `${gitConfig.repoUrl
+      .split("/")
+      .pop()
+      ?.replace(".git", "")}-${gitConfig.branch}`
+  } else {
+    throw new Error("Invalid stack source")
+  }
+
+  const deploymentConfig = await deploymentStep(defaultStackName)
 
   const confirmed = await confirm({
     message: "Do you want to deploy?",
@@ -29,13 +50,11 @@ async function main() {
     return
   }
 
-  // TODO: create gitlab access token only after confirmation
-
   const res = await createPortainerStack(
-    portainerConfig,
-    environment,
-    repoConfig,
-    deploymentConfig
+    portainerInstance,
+    portainerEnvironment,
+    deploymentConfig,
+    gitConfig
   )
   console.log(res)
 }

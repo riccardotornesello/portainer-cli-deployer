@@ -5,6 +5,7 @@ export type RepoCredentials = {
 
 export type RepoConfig = {
   repoUrl: string
+  insecureRepoUrl: boolean
   branch: string
   composeFileName: string
   credentials: RepoCredentials | null
