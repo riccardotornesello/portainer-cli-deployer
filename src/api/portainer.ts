@@ -7,7 +7,7 @@ import { RepoConfig } from "../types/git"
 import { DeploymentConfig } from "../types/deployment"
 
 async function portainerApiCall(
-  portainerConfig: PortainerInstance,
+  portainerInstance: PortainerInstance,
   method: string,
   url: string,
   data: any = null
@@ -16,21 +16,21 @@ async function portainerApiCall(
     method,
     url,
     data,
-    baseURL: portainerConfig.portainerUrl,
+    baseURL: portainerInstance.portainerUrl,
     headers: {
-      "X-API-Key": portainerConfig.portainerAccessToken,
+      "X-API-Key": portainerInstance.portainerAccessToken,
     },
     httpsAgent: new https.Agent({
-      rejectUnauthorized: !portainerConfig.portainerInsecure,
+      rejectUnauthorized: !portainerInstance.portainerInsecure,
     }),
   })
 }
 
 export async function getPortainerInstanceStatus(
-  portainerConfig: PortainerInstance
+  portainerInstance: PortainerInstance
 ) {
   const res = await portainerApiCall(
-    portainerConfig,
+    portainerInstance,
     "get",
     "/api/system/status"
   )
@@ -43,9 +43,13 @@ export async function getPortainerInstanceStatus(
 }
 
 export async function getPortainerInstanceInfo(
-  portainerConfig: PortainerInstance
+  portainerInstance: PortainerInstance
 ) {
-  const res = await portainerApiCall(portainerConfig, "get", "/api/system/info")
+  const res = await portainerApiCall(
+    portainerInstance,
+    "get",
+    "/api/system/info"
+  )
 
   if (res.status === 401) {
     throw new Error("Unauthorized")
@@ -59,15 +63,15 @@ export async function getPortainerInstanceInfo(
 }
 
 export async function getPortainerEnvironments(
-  portainerConfig: PortainerInstance
+  portainerInstance: PortainerInstance
 ) {
-  const res = await portainerApiCall(portainerConfig, "get", "/api/endpoints")
+  const res = await portainerApiCall(portainerInstance, "get", "/api/endpoints")
 
   return res.data
 }
 
 export async function createPortainerStack(
-  portainerConfig: PortainerInstance,
+  portainerInstance: PortainerInstance,
   environment: PortainerEnvironment,
   deploymentConfig: DeploymentConfig,
   repoConfig?: RepoConfig
@@ -100,7 +104,7 @@ export async function createPortainerStack(
   }
 
   const res = await portainerApiCall(
-    portainerConfig,
+    portainerInstance,
     "post",
     `/api/stacks/create/standalone/repository?endpointId=${environment.id}`,
     stackData

@@ -8,11 +8,11 @@ import { PortainerInstance, PortainerEnvironment } from "../../types/portainer"
 const globalOptions = program.opts()
 
 export default async function (
-  portainerConfig: PortainerInstance
+  portainerInstance: PortainerInstance
 ): Promise<PortainerEnvironment> {
   if (globalOptions.portainerEnvironment) {
     const availableEnvironments =
-      await getPortainerEnvironments(portainerConfig)
+      await getPortainerEnvironments(portainerInstance)
 
     const chosenEnvironment = availableEnvironments.find(
       (env: any) => env.Id === globalOptions.portainerEnvironment
@@ -27,7 +27,7 @@ export default async function (
       name: chosenEnvironment.Name,
     }
   } else {
-    const { id, name } = await askPortainerEnvironment(portainerConfig)
+    const { id, name } = await askPortainerEnvironment(portainerInstance)
 
     return {
       id,

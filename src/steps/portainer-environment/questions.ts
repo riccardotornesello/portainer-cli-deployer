@@ -4,9 +4,9 @@ import { getPortainerEnvironments } from "../../api/portainer"
 import { PortainerInstance, PortainerEnvironment } from "../../types/portainer"
 
 export async function askPortainerEnvironment(
-  portainerConfig: PortainerInstance
+  portainerInstance: PortainerInstance
 ): Promise<PortainerEnvironment> {
-  const endpoints = await getPortainerEnvironments(portainerConfig)
+  const endpoints = await getPortainerEnvironments(portainerInstance)
 
   if (!endpoints) {
     throw new Error("Cannot get Portainer environments")
