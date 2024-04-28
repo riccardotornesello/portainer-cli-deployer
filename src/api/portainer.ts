@@ -84,7 +84,7 @@ export async function createPortainerStack(
         RepositoryAuthentication: repoConfig !== null,
         RepositoryUsername: repoConfig.credentials?.username,
         RepositoryPassword: repoConfig.credentials?.password,
-        TLSSkipVerify: true, // TODO: insecureRepo in options
+        TLSSkipVerify: repoConfig.insecureRepoUrl,
       }
     : {}
 

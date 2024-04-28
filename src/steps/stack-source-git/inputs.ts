@@ -64,3 +64,10 @@ export async function composeFileNameInput() {
     default: "docker-compose.yml",
   })
 }
+
+export async function insecureRepoUrlInput() {
+  return await confirm({
+    message: "Do you want to use an insecure repository URL?",
+    default: false,
+  })
+}

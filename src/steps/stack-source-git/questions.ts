@@ -9,18 +9,21 @@ import {
   repoHostInput,
   branchInput,
   composeFileNameInput,
+  insecureRepoUrlInput,
 } from "./inputs"
 
 export async function askRepoConfig(): Promise<RepoConfig> {
   const repoUrl = await repoUrlInput()
+  const insecureRepoUrl = await insecureRepoUrlInput()
   const credentials = await askRepoCredentials(repoUrl)
   const branch = await branchInput()
   const composeFileName = await composeFileNameInput()
 
-  // TODO: check repo auth, branch and file
+  // TODO: check repo auth, branch and file existence
 
   return {
     repoUrl,
+    insecureRepoUrl,
     branch,
     composeFileName,
     credentials,
