@@ -1,5 +1,6 @@
 {
   "name": "portainer-cli-deployer",
+  "description": "CLI tool to easily deploy a container stacks to Portainer",
   "version": "0.1.0",
   "repository": {
     "type": "git",

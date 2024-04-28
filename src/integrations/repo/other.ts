@@ -1,6 +1,6 @@
 import { input, password } from "@inquirer/prompts"
 
-import { RepoHostInterface } from "../types/repo"
+import { RepoHostInterface } from "../../types/git"
 
 export class OtherRepoHost implements RepoHostInterface {
   async authenticate() {

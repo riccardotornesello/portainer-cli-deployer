@@ -1,8 +1,9 @@
 import path from "path"
-import os from "os"
 import fs from "fs"
 
-const configurationPath = path.join(os.homedir(), ".portainer-cli-deployer")
+import { configurationPath } from "../../utils/storage"
+import { PortainerConfig } from "../../types/portainer"
+
 const instancesFilePath = path.join(configurationPath, "credentials.json")
 
 export async function getPortainerInstances() {
@@ -13,10 +14,16 @@ export async function getPortainerInstances() {
   return JSON.parse(fs.readFileSync(instancesFilePath, "utf8"))
 }
 
-export async function storePortainerInstances(instances: any) {
+export async function storePortainerInstance(
+  name: string,
+  portainerInstance: PortainerConfig
+) {
   fs.mkdirSync(configurationPath, {
     recursive: true,
   })
+
+  const instances = await getPortainerInstances()
+  instances[name] = portainerInstance
 
   fs.writeFileSync(instancesFilePath, JSON.stringify(instances, null, 2))
 }

@@ -1,13 +1,17 @@
 import { select, input, confirm } from "@inquirer/prompts"
 
-import { getPortainerInstances, storePortainerInstances } from "../storage"
-import { PortainerConfig } from "../types/portainer"
-import { checkPortainerConnection, getPortainerInfo } from "../api/portainer"
+import { getPortainerInstances, storePortainerInstance } from "./storage"
+import { PortainerConfig } from "../../types/portainer"
+import {
+  checkPortainerConnection,
+  checkPortainerAuthentication,
+} from "./validation"
+import { urlRegex } from "../../utils/regex"
 
 export async function askPortainerInstance(): Promise<PortainerConfig> {
   const savedInstances = await getPortainerInstances()
 
-  let { portainerUrl, portainerAccessToken } = await select({
+  let { portainerUrl, portainerAccessToken, portainerInsecure } = await select({
     message: "Select a saved Portainer instance or enter a new one",
     choices: [
       {
@@ -26,15 +30,40 @@ export async function askPortainerInstance(): Promise<PortainerConfig> {
     const newPortainerConfig = await askNewPortainerInstance(savedInstances)
     portainerUrl = newPortainerConfig.portainerUrl
     portainerAccessToken = newPortainerConfig.portainerAccessToken
+    portainerInsecure = newPortainerConfig.portainerInsecure
+  } else {
+    let err = await checkPortainerConnection({
+      portainerUrl,
+      portainerAccessToken,
+      portainerInsecure,
+    })
+    if (err) {
+      throw new Error("Could not connect to the Portainer instance")
+    }
+
+    err = await checkPortainerAuthentication({
+      portainerUrl,
+      portainerAccessToken,
+      portainerInsecure,
+    })
+    if (err) {
+      throw new Error("Portainer authentication failed")
+    }
   }
 
   return {
     portainerUrl,
     portainerAccessToken,
+    portainerInsecure,
   }
 }
 
 async function askNewPortainerInstance(savedInstances: any) {
+  const insecure = await confirm({
+    message: "Do you want to ignore certificate errors?",
+    default: false,
+  })
+
   let portainerUrl = await input({
     message: "Enter the Portainer URL",
     validate: async (input) => {
@@ -42,13 +71,18 @@ async function askNewPortainerInstance(savedInstances: any) {
         return "Portainer URL cannot be empty"
       }
 
-      const urlRegex = /^(https?):\/\/([a-zA-Z0-9.-]+)(:\d{1,5})?(\/)?$/
       if (!urlRegex.test(input)) {
         return "Portainer URL is in an invalid format.\nIt should be in the format http(s)://hostname(:port)\nFor example: https://portainer.example.com:9000"
       }
 
-      if (!(await checkPortainerConnection(input))) {
-        return "Portainer URL is not reachable"
+      const err = await checkPortainerConnection({
+        portainerUrl: input,
+        portainerAccessToken: "",
+        portainerInsecure: insecure,
+      })
+
+      if (err) {
+        return "Could not connect to the Portainer instance. Please check the URL and try again."
       }
 
       return true
@@ -67,12 +101,13 @@ async function askNewPortainerInstance(savedInstances: any) {
         return "Portainer access token cannot be empty"
       }
 
-      if (
-        !(await getPortainerInfo({
-          portainerUrl,
-          portainerAccessToken: input,
-        }))
-      ) {
+      const err = await checkPortainerAuthentication({
+        portainerUrl,
+        portainerAccessToken: input,
+        portainerInsecure: insecure,
+      })
+
+      if (err) {
         return "Portainer access token is not valid"
       }
 
@@ -83,6 +118,7 @@ async function askNewPortainerInstance(savedInstances: any) {
   const newInstance = {
     portainerUrl,
     portainerAccessToken,
+    portainerInsecure: insecure,
   }
 
   await askSavePortainerInstance(savedInstances, newInstance)
@@ -115,7 +151,7 @@ async function askSavePortainerInstance(
       }
 
       if (Object.keys(otherInstances).includes(input)) {
-        return "The name is already in use"
+        return "This name is already in use"
       }
 
       return true
@@ -126,11 +162,5 @@ async function askSavePortainerInstance(
     return
   }
 
-  const newInstances = otherInstances
-  otherInstances[portainerInstanceName] = {
-    portainerUrl: newInstance.portainerUrl,
-    portainerAccessToken: newInstance.portainerAccessToken,
-  }
-
-  storePortainerInstances(newInstances)
+  await storePortainerInstance(portainerInstanceName, newInstance)
 }
