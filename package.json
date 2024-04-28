@@ -1,6 +1,10 @@
 {
   "name": "portainer-cli-deployer",
   "description": "CLI tool to easily deploy a container stacks to Portainer",
+  "bugs": {
+    "url": "https://github.com/riccardotornesello/portainer-cli-deployer/issues"
+  },
+  "license": "MIT",
   "version": "0.1.0",
   "repository": {
     "type": "git",
