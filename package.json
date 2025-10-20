@@ -24,22 +24,42 @@
     "start": "node dist/index.js",
     "build": "tsup",
     "dev": "ts-node src/index.ts",
-    "format": "prettier --write '!./data' ."
+    "format": "prettier --write '!./data' .",
+    "format:check": "prettier --check '!./data' .",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix"
   },
   "dependencies": {
-    "@inquirer/prompts": "^4.2.1",
-    "axios": "^1.6.5",
+    "@inquirer/prompts": "^7.9.0",
+    "axios": "^1.12.2",
     "cli-table": "^0.3.11",
     "commander": "^12.0.0",
     "uuid": "^9.0.1",
     "zod": "^3.22.4"
   },
+  "engines": {
+    "node": ">=20.10.0"
+  },
+  "keywords": [
+    "portainer",
+    "docker",
+    "docker-compose",
+    "deployment",
+    "cli",
+    "devops",
+    "container",
+    "stack"
+  ],
+  "homepage": "https://github.com/riccardotornesello/portainer-cli-deployer#readme",
   "devDependencies": {
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^10.0.3",
     "@semantic-release/npm": "^12.0.0",
     "@types/cli-table": "^0.3.4",
     "@types/uuid": "^9.0.8",
+    "@typescript-eslint/eslint-plugin": "^8.46.2",
+    "@typescript-eslint/parser": "^8.46.2",
+    "eslint": "^9.38.0",
     "prettier": "^3.2.5",
     "semantic-release": "^23.0.7",
     "ts-node": "^10.9.2",
