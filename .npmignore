@@ -1,1 +1,32 @@
+# Development files
 config.json
+*.test.ts
+*.spec.ts
+__tests__/
+.vscode/
+.github/
+
+# Build files
+src/
+tsconfig.json
+tsup.config.ts
+
+# Documentation (not needed in npm package)
+CONTRIBUTING.md
+CODE_OF_CONDUCT.md
+
+# Git files
+.git/
+.gitignore
+.gitattributes
+
+# CI/CD
+.travis.yml
+.circleci/
+
+# Misc
+*.log
+.DS_Store
+.env
+.env.*
+credentials.json

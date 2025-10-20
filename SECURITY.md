@@ -47,10 +47,13 @@ When using Portainer CLI Deployer:
 ## Known Security Considerations
 
 ### Credential Storage
+
 Credentials are stored in plain text in the local configuration file. Users should:
+
 - Ensure proper file permissions on the configuration directory
 - Be aware that any process with user-level access can read these credentials
 - Consider using environment variables for sensitive deployments
 
 ### Network Security
+
 When using the `--portainer-insecure` flag, SSL/TLS certificate verification is disabled. This should only be used in trusted development environments.
