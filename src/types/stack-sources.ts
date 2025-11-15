@@ -4,5 +4,7 @@ export enum StackSource {
 
 export enum RepoHost {
   GITLAB = "gitlab",
+  GITHUB = "github",
+  BITBUCKET = "bitbucket",
   OTHER = "other",
 }

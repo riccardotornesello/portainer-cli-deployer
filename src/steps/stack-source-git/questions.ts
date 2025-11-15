@@ -1,6 +1,8 @@
 import { RepoConfig, RepoCredentials, RepoHostInterface } from "../../types/git"
 import { RepoHost } from "../../types/stack-sources"
 import { GitlabRepoHost } from "../../integrations/repo/gitlab"
+import { GithubRepoHost } from "../../integrations/repo/github"
+import { BitbucketRepoHost } from "../../integrations/repo/bitbucket"
 import { OtherRepoHost } from "../../integrations/repo/other"
 
 import {
@@ -44,6 +46,12 @@ async function askRepoCredentials(
   switch (repoHostInputVal) {
     case RepoHost.GITLAB:
       repoHost = new GitlabRepoHost(repoUrl)
+      break
+    case RepoHost.GITHUB:
+      repoHost = new GithubRepoHost(repoUrl)
+      break
+    case RepoHost.BITBUCKET:
+      repoHost = new BitbucketRepoHost(repoUrl)
       break
     case RepoHost.OTHER:
       repoHost = new OtherRepoHost()

@@ -6,5 +6,7 @@ export const StackSourceDetails: Record<StackSource, string> = {
 
 export const RepoHostDetails: Record<RepoHost, string> = {
   [RepoHost.GITLAB]: "Automatic GitLab access token",
+  [RepoHost.GITHUB]: "Automatic GitHub access token",
+  [RepoHost.BITBUCKET]: "Automatic Bitbucket access token",
   [RepoHost.OTHER]: "Username and password",
 }
