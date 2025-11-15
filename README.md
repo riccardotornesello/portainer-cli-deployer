@@ -20,7 +20,7 @@ portainer-cli-deployer
 
 This command will initiate the deployment process and guide you through a series of questions to select the Portainer instance and environment, as well as the Git repository from which to read the docker-compose file.
 
-If the repository is private, you will have the option to provide your username and password. Additionally, in this version, if the private repository is hosted on Gitlab, you can follow a guided procedure to automatically create an authentication token.
+If the repository is private, you will have the option to provide your username and password. Additionally, in this version, if the private repository is hosted on GitLab, GitHub, or Bitbucket, you can follow a guided procedure to automatically create or validate an authentication token.
 
 ## Future Updates
 
@@ -28,8 +28,8 @@ In future versions, we plan to extend this capability to all major Git repositor
 
 ### Roadmap
 
-- [ ] Add support for Bitbucket private repositories automatically
-- [ ] Add support for GitHub private repositories automatically
+- [x] Add support for Bitbucket private repositories automatically
+- [x] Add support for GitHub private repositories automatically
 - [ ] Create authentication tokens only after the confirmation
 - [ ] Allow not interactive use by passing all the required parameters as arguments
 - [ ] Add support for deploying stacks from local files
